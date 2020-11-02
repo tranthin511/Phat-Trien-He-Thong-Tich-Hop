@@ -4,7 +4,7 @@ import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.util.Scanner;
 
-import IFlight;
+import com.rmi.IFlight;
 
 public class Client {
     public static void main(String args[]) {
@@ -31,7 +31,7 @@ public class Client {
     					System.out.println("Date :\t"+iFlight.getFlight(id[x-1]).getDate());
     					System.out.println("Total number of tickets :\t"+iFlight.getFlight(id[x-1]).getTotal());
     					System.out.println("Tickets sold : "+iFlight.getFlight(id[x-1]).getOdered()+"\t<----->\t Tickets not yet sold :"+(iFlight.getFlight(id[x-1]).getTotal()-iFlight.getFlight(id[x-1]).getOdered()));
-    					//
+    					//---details---pay---order
     					do {
     						int sold = iFlight.getFlight(id[x-1]).getOdered();
     						int total = iFlight.getFlight(id[x-1]).getTotal();
@@ -40,15 +40,15 @@ public class Client {
     						String txt = scan1.nextLine();
     						if(txt.matches("[0-9]+")) {
     							int x1 = Integer.parseInt(txt);
-        						if(x1 == 1) {	
-        							//
-        							if(sold >= total) {
-        								System.out.println(" Not enough ticket ");
+    							switch(x1) {
+    							case 1:{
+    								if(sold >= total) {
+        								System.out.println("Tickets are over");
         								scan1.nextLine();
         							}else {
         								while(true) {
-        									System.out.println("*********************");
-        									System.out.print(" Number of tickets: >>>");
+        									System.out.println(" Input -> cancel to exit");3
+        									System.out.print(" Number of Tickets =");
             								scan1 = new Scanner(System.in);
             								String od = scan1.nextLine();
             								//
@@ -62,32 +62,74 @@ public class Client {
                 									System.out.println(iFlight.Order(id[x-1], x2,u,p));
                 									scan1.nextLine();
                 									break;
-            									}else System.out.println("number is large more total tickets");
-            								}else if(od.equals("cancel")) { break; }
+            									}else System.out.println("Not enough Ticket");
+            								}else if(od.equalsIgnoreCase("cancel")) { break; }
             								else System.out.println("Input is not true");
             								//
         								}
         							}
-        							//
+        							//---return home
         							System.out.println(iFlight.Display(0));
         							for (int i = 0; i < id.length; i++) {
         				            	System.out.println((i+1)+">\tIdFlight: "+id[i]+"\t\tFrom: "+iFlight.getFlight(id[i]).getFrom()+"\t\tTo: "+iFlight.getFlight(id[i]).getTo()+"\t\tDate: "+iFlight.getFlight(id[i]).getDate());
         							}
         							break;
-        							}else 
-        							if(x1 == 2) {
+    							}
+    							case 2:{
+    								//
+        							if(sold == 0) {
+        								System.out.println("Tickets no data");
+        								scan1.nextLine();
+        							}else {
+        								while(true) {
+        									System.out.println(" Input -> cancel to exit");
+        									System.out.print(" Number of Tickets = ");
+            								scan1 = new Scanner(System.in);
+            								String od = scan1.nextLine();
+            								//
+            								if(od.matches("[0-9]+")){
+            									int x2 = Integer.parseInt(od);
+            									if(x2 < sold) {
+            										System.out.print("Username : ");
+                									String u = scan1.nextLine();
+                									System.out.print("Password : ");
+                									String p = scan1.nextLine();
+                									System.out.println(iFlight.Pay(id[x-1], x2,u,p));
+                									scan1.nextLine();
+                									break;
+            									}else System.out.println("Not enough ticket");
+            								}else if(od.equalsIgnoreCase("cancel")) { break; }
+            								else System.out.println("Input is not true");
+            								//
+        								}
+        							}
+        							//---return display
         							System.out.println(iFlight.Display(0));
         							for (int i = 0; i < id.length; i++) {
         				            	System.out.println((i+1)+">\tIdFlight: "+id[i]+"\t\tFrom: "+iFlight.getFlight(id[i]).getFrom()+"\t\tTo: "+iFlight.getFlight(id[i]).getTo()+"\t\tDate: "+iFlight.getFlight(id[i]).getDate());
         							}
         							break;
-        						}else System.out.println("Input data errol!!!");
+    							}
+    							case 3:{
+    								System.out.println(iFlight.Display(0));
+        							for (int i = 0; i < id.length; i++) {
+        				            	System.out.println((i+1)+">\tIdFlight: "+id[i]+"\t\tFrom: "+iFlight.getFlight(id[i]).getFrom()+"\t\tTo: "+iFlight.getFlight(id[i]).getTo()+"\t\tDate: "+iFlight.getFlight(id[i]).getDate());
+        							}
+        							break;
+    							}
+    							default:{
+    								System.out.println("Input data errol!!!");
+    								break;
+    							}
+    						}
+    							break;
     						}else System.out.println("Input data errol!!!");
     					}while(true);	
-    					//
+    				//
     				}else System.out.println("Input number not true !!!");
     				//
-    			}else if(text.equalsIgnoreCase("exit")) break;
+    				
+    			}else if(text.equals("exit")) break;
     					else System.out.println("Input data errol!!! Input must is number");
     			//
         	}
@@ -96,7 +138,7 @@ public class Client {
         } catch (MalformedURLException e) {
             e.printStackTrace();
         } catch (RemoteException e) {
-            e.printStackTrace(); 
+            e.printStackTrace();
         }
     }
 }

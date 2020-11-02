@@ -96,7 +96,7 @@ public class Client {
         } catch (MalformedURLException e) {
             e.printStackTrace();
         } catch (RemoteException e) {
-            e.printStackTrace();
+            e.printStackTrace(); 
         }
     }
 }

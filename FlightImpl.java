@@ -92,36 +92,64 @@ public class FlightImpl extends UnicastRemoteObject implements IFlight{
 			break;
 		}
 		case 1:{
-			 s =".-----------------------------------------------------------------------------------------------."
-						+"\n"+"|					Flight Details !!!					|"
-						+"\n"+"*-----------------------------------------------------------------------------------------------*"
-						+"\n"+"\t\tFlight Details:\n\t\t(Choose 1 or 2) "+"1.Order Tickets\t\t\t"+"2.Cancel"+"\n";
-			 break;
-		}
-		case 2:{
-			 s =".-----------------------------------------------------------------------------------------------."
-						+"\n"+"|					Order Ticket !!!					|"
-						+"\n"+"*-----------------------------------------------------------------------------------------------*"
-						+"\n"+"\t\tTicket:\n\t\t"+"Write return to exit"+"\n\n";
-			 break;
-		}
-		default:{
-			s = "Data is not true !!! plesase press again !!!\n\n";
+			s =".-----------------------------------------------------------------------------------------------."
+					   +"\n"+"|					Flight Details !!!					|"
+					   +"\n"+"*-----------------------------------------------------------------------------------------------*"
+					   +"\n"+"\t\tFlight Details:\n\t"+"1.Order Tickets\t\t"+"2.Pay Tickets\t\t"+"3.Cancel"+"\n";
 			break;
-		}
-		}
-		return s;
+	   }
+	   case 2:{
+			s =".-----------------------------------------------------------------------------------------------."
+					   +"\n"+"|					Order Ticket !!!					|"
+					   +"\n"+"*-----------------------------------------------------------------------------------------------*"
+					   +"\n"+"\t\tTicket:\n\t\t"+"Write return to exit"+"\n\n";
+			break;
+	   }
+	   default:{
+		   s = "Data is not true !!! plesase press again !!!\n\n";
+		   break;
+	   }
+	   }
+	   return s;
 	}
 	@Override
 	public String Order(String x, int y,String user,String password) throws RemoteException {
 		String s = null;
 		// TODO Auto-generated method stub
-		if(user.equals("tranmanhthin")&&password.equals("05112000")) {
+		if(user.equalsIgnoreCase("tranmanhthin")&&password.equals("05112000")) {
 			Flight[] data = Data();
 			for (int i = 0; i < data.length; i++) {
 				if(data[i].getId().equals(x)) {
 					//data[i].setOdered(data[i].getOdered()+y);
 					data[i].setOdered(data[i].getOdered()+y);
+				}
+			}
+			try {
+				FileWriter writer = new FileWriter("F:\\flight.txt");
+				for (int i = 0; i < data.length; i++) {
+					writer.write(data[i].getId()+"\t"+data[i].getDate()+"\t"+data[i].getFrom()+"\t"+data[i].getTo()+"\t"+data[i].getFlyTime()+"\t"+data[i].getTotal()+"\t"+data[i].getOdered()+"\n");
+				}
+				writer.close();
+				s = "SUCCESS";
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}else{
+			s = "UNSUCCESS";
+		}
+		return s;
+	}
+	public String Pay(String x, int y, String user, String password) throws RemoteException {
+		// TODO Auto-generated method stub
+		String s = null;
+		// TODO Auto-generated method stub
+		if(user.equalsIgnoreCase("tranmanhthin")&&password.equals("05112000")) {
+			Flight[] data = Data();
+			for (int i = 0; i < data.length; i++) {
+				if(data[i].getId().equals(x)) {
+					//data[i].setOdered(data[i].getOdered()+y);
+					data[i].setOdered(data[i].getOdered()-y);
 				}
 			}
 			try {

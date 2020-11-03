@@ -129,7 +129,7 @@ public class Client {
     				}else System.out.println("Input number not true !!!");
     				//
     				
-    			}else if(text.equals("exit")) break;
+    			}else if(text.equalsIgnoreCase("exit")) break;
     					else System.out.println("Input data errol!!! Input must is number");
     			//
         	}
